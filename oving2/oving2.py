@@ -34,6 +34,9 @@ def bfs(r):
             b.d = n.d + 1
             nk.appendleft(b)
 
+def vfs(r):
+    pass
+
 
 def main():
     funksjon = stdin.readline().rstrip()
