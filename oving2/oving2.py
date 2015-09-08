@@ -18,9 +18,8 @@ def dfs(r):
         if n.a:
             return n.d
         for b in n.b:
-            if b.d == -1:
-                b.d = n.d + 1
-                ns.append(b)
+            b.d = n.d + 1
+            ns.append(b)
 
 
 def bfs(r):
@@ -32,9 +31,8 @@ def bfs(r):
         if n.a:
             return n.d
         for b in n.b:
-            if b.d == -1:
-                b.d = n.d + 1
-                nk.appendleft(b)
+            b.d = n.d + 1
+            nk.appendleft(b)
 
 
 def main():
