@@ -1,7 +1,5 @@
-from Queue import Queue
+from collections import deque
 from sys import stdin
-
-__author__ = 'Vemund'
 
 
 class Node:
@@ -12,35 +10,35 @@ class Node:
 
 
 def dfs(rot):
-    node_stakk = []
+    node_stakk = deque()
     rot.distance = 0
     node_stakk.append(rot)
-    while not len(node_stakk)== 0:
+    while node_stakk:
         node = node_stakk.pop()
         if node.ratatosk:
             return node.distance
         for barn in node.barn:
             if barn.distance == -1:
-                barn.distance = node.distance +1
+                barn.distance = node.distance + 1
                 node_stakk.append(barn)
 
 
 def bfs(rot):
-    node_ko = Queue()
+    node_ko = deque()
     rot.distance = 0
-    node_ko.put_nowait(rot)
-    while not node_ko.empty():
-        node = node_ko.get_nowait()
+    node_ko.appendleft(rot)
+    while node_ko:
+        node = node_ko.pop()
         if node.ratatosk:
             return node.distance
         for child in node.barn:
             if child.distance == -1:
-                child.distance = node.distance +1
-                node_ko.put_nowait(child)
+                child.distance = node.distance + 1
+                node_ko.appendleft(child)
 
 
 def main():
-    funksjon = stdin.readline().strip()
+    funksjon = stdin.readline().rstrip()
     antall_noder = int(stdin.readline())
     noder = []
     for i in range(antall_noder):
@@ -59,5 +57,5 @@ def main():
     elif funksjon == 'bfs':
         print bfs(start_node)
     elif funksjon == 'velg':
-        print dfs(start_node)
+        print bfs(start_node)
 main()
