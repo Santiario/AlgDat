@@ -14,38 +14,77 @@ def partition(liste, lo, hi):
     liste[i], liste[hi] = liste[hi], liste[i]
     return i
 
-def binary_search(liste, value):
+def merge_sort(m):
+    if len(m) <= 1:
+        return m
+
+    middle = len(m) // 2
+    left = m[:middle]
+    right = m[middle:]
+
+    left = merge_sort(left)
+    right = merge_sort(right)
+    return list(merge(left, right))
+
+def merge(left, right):
+    result = []
+    left_idx, right_idx = 0, 0
+    while left_idx < len(left) and right_idx < len(right):
+        # change the direction of this comparison to change the direction of the sort
+        if left[left_idx] <= right[right_idx]:
+            result.append(left[left_idx])
+            left_idx += 1
+        else:
+            result.append(right[right_idx])
+            right_idx += 1
+
+    if left:
+        result.extend(left[left_idx:])
+    if right:
+        result.extend(right[right_idx:])
+    return result
+
+
+def binary_search(liste, value, find_lower):
     low = 0
     high = len(liste)-1
     while low <= high:
-        mid = (low+high)//2
+        mid = (low + high) // 2
         if liste[mid] > value:
             high = mid-1
         elif liste[mid] < value:
             low = mid+1
         else:
-            return mid
-    return -1
+            return liste[mid]
+    if find_lower:
+        if low != 0:
+            return liste[low - 1]
+        else:
+            return liste[low]
+    else:
+        if high != len(liste) - 1:
+            return liste[high + 1]
+        else:
+            return liste[high]
 
 def finn(liste, nedre, ovre):
-    pass
+    return [binary_search(liste, nedre, True), binary_search(liste, ovre, False)]
 
-    # Merk: resultatet ma returneres
-    # SKRIV DIN KODE HER
 
 def main():
     from sys import stdin
     liste = []
     for x in stdin.readline().split():
-        liste.append(int(x)) #  Kanskje mulig å gjøre dette raskere?
+        liste.append(int(x)) #  Kanskje mulig aa gjore dette raskere?
 
-    quick_sort(liste, 0, len(liste) - 1)
+    #quick_sort(liste, 0, len(liste) - 1)
+    liste = merge_sort(liste)
 
     for linje in stdin:
         ord = linje.split()
         minst = int(ord[0])
         maks = int(ord[1])
-        resultat = finn(list, minst, maks)
+        resultat = finn(liste, minst, maks)
         print str(resultat[0]) + " " + str(resultat[1])
 
 main()
