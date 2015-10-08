@@ -1,7 +1,8 @@
 def quick_sort(liste, lo, hi):
-    p = partition(liste, lo, hi)
-    quick_sort(liste, lo, p - 1)
-    quick_sort(liste, p + 1, hi)
+    if lo < hi:
+        p = partition(liste, lo, hi)
+        quick_sort(liste, lo, p - 1)
+        quick_sort(liste, p + 1, hi)
 
 def partition(liste, lo, hi):
     pivot = liste[hi]
@@ -68,6 +69,28 @@ def binary_search(liste, value, find_lower):
 def finn(liste, nedre, ovre):
     return [binary_search(liste, nedre, True), binary_search(liste, ovre, False)]
 
+def radixsort(liste):
+  lengde = False
+  plass = 1
+
+  while not lengde:
+    lengde = True
+    buckets = [[] for i in range(10)]
+
+    for i in liste:
+      temp = i / plass
+      buckets[temp % 10].append(i)
+      if lengde and temp > 0:
+        lengde = False
+
+    n = 0
+    for i in range(10):
+      buck = buckets[i]
+      for j in buck:
+        liste[n] = j
+        n += 1
+
+    plass *= 10
 
 def main():
     from sys import stdin
@@ -75,12 +98,11 @@ def main():
     for x in stdin.readline().split():
         liste.append(int(x)) #  Kanskje mulig aa gjore dette raskere?
 
-    #quick_sort(liste, 0, len(liste) - 1)
-    liste = merge_sort(liste)
-    f = finn
+    radixsort(liste)
+
     for linje in stdin:
         ord = linje.split()
-        resultat = f(liste, int(ord[0]), int(ord[1]))
+        resultat = finn(liste, int(ord[0]), int(ord[1]))
         print str(resultat[0]) + " " + str(resultat[1])
 
 main()

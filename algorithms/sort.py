@@ -82,5 +82,5 @@ def merge(left, right):
 
 
 print list1
-list1 = merge_sort(list1)
+quick_sort(list1, 0, len(list1) - 1)
 print list1
