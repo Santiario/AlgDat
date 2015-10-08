@@ -69,6 +69,16 @@ def binary_search(liste, value, find_lower):
 def finn(liste, nedre, ovre):
     return [binary_search(liste, nedre, True), binary_search(liste, ovre, False)]
 
+def insertion_sort(liste):
+    for i in range(1,len(liste)):
+        j = i - 1
+        value = liste[i]
+        while liste[j] > value and j >= 0:
+            liste[j+1] = liste[j]
+            j -= 1
+        liste[j+1] = value
+
+
 def radixsort(liste):
   lengde = False
   plass = 1
@@ -97,8 +107,10 @@ def main():
     liste = []
     for x in stdin.readline().split():
         liste.append(int(x)) #  Kanskje mulig aa gjore dette raskere?
-
-    radixsort(liste)
+    if len(liste) < 7:
+        insertion_sort(liste)
+    else:
+        radixsort(liste)
 
     for linje in stdin:
         ord = linje.split()
