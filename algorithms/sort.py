@@ -1,6 +1,6 @@
 __author__ = 'Vemund'
 
-list = [0.234,0.345,0.342,0.264,0.4224,0.3632,0.6252,0.3453,0.5555,0.999]
+liste = [0.234,0.345,0.342,0.264,0.4224,0.3632,0.6252,0.3453,0.5555,0.999]
 
 def bucket_sort(list):
     print(list)
@@ -31,6 +31,23 @@ def insertion_sort(list):
     return result_list
 
 
-print bucket_sort(list)
-print
-print insertion_sort(list)
+list1 = [1,2,3,4,78,9,6,2,3,5,6,8,9,4,2,6,0,3,1,56,253,62,5]
+def quick_sort(liste, lo, hi):
+    if lo < hi:
+        p = partition(liste, lo, hi)
+        quick_sort(liste, lo, p - 1)
+        quick_sort(liste, p + 1, hi)
+
+def partition(liste, lo, hi):
+    pivot = liste[hi]
+    i = lo
+    for j in range(lo, hi):
+        if liste[j] <= pivot:
+            liste[i], liste[j] = liste[j], liste[i]
+            i += 1
+    liste[i], liste[hi] = liste[hi], liste[i]
+    return i
+
+print list1
+quick_sort(list1, 0, len(list1) - 1)
+print list1
