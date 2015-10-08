@@ -1,8 +1,7 @@
 def quick_sort(liste, lo, hi):
-    if lo < hi:
-        p = partition(liste, lo, hi)
-        quick_sort(liste, lo, p - 1)
-        quick_sort(liste, p + 1, hi)
+    p = partition(liste, lo, hi)
+    quick_sort(liste, lo, p - 1)
+    quick_sort(liste, p + 1, hi)
 
 def partition(liste, lo, hi):
     pivot = liste[hi]
@@ -17,20 +16,19 @@ def partition(liste, lo, hi):
 def merge_sort(m):
     if len(m) <= 1:
         return m
-
+    n = merge
     middle = len(m) // 2
     left = m[:middle]
     right = m[middle:]
 
     left = merge_sort(left)
     right = merge_sort(right)
-    return list(merge(left, right))
+    return list(n(left, right))
 
 def merge(left, right):
     result = []
     left_idx, right_idx = 0, 0
     while left_idx < len(left) and right_idx < len(right):
-        # change the direction of this comparison to change the direction of the sort
         if left[left_idx] <= right[right_idx]:
             result.append(left[left_idx])
             left_idx += 1
@@ -79,12 +77,10 @@ def main():
 
     #quick_sort(liste, 0, len(liste) - 1)
     liste = merge_sort(liste)
-
+    f = finn
     for linje in stdin:
         ord = linje.split()
-        minst = int(ord[0])
-        maks = int(ord[1])
-        resultat = finn(liste, minst, maks)
+        resultat = f(liste, int(ord[0]), int(ord[1]))
         print str(resultat[0]) + " " + str(resultat[1])
 
 main()
