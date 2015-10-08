@@ -1,6 +1,7 @@
 __author__ = 'Vemund'
 
 
+
 class Node:
 
     def __init__(self, parent=None, left=None, right=None):
@@ -40,9 +41,31 @@ def predecessor(node):
         pre = node.parent  # Kunne ogsaa vert pre = pre.parent
     return pre
 
+def binary_search(liste, value, find_lower):
+    low = 0
+    high = len(liste)-1
+    while low <= high:
+        mid = (low + high) // 2
+        if liste[mid] > value:
+            high = mid-1
+        elif liste[mid] < value:
+            low = mid+1
+        else:
+            return liste[mid]
+    if find_lower:
+        if low != 0:
+            return liste[low - 1]
+        else:
+            return liste[low]
+    else:
+        if high != len(liste) - 1:
+            return liste[high + 1]
+        else:
+            return liste[high]
 
 if __name__ == "__main__":
-    pass
+    liste = [1,2,5,6,7,8,9,10]
+    print binary_search(liste, 11, False)
 
 
 
