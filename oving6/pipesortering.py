@@ -1,11 +1,11 @@
-def quick_sort(liste, lo, hi):
+def quick_sort(liste, lo, hi, rand):
     if lo < hi:
         p = partition(liste, lo, hi)
         quick_sort(liste, lo, p - 1)
         quick_sort(liste, p + 1, hi)
 
-def partition(liste, lo, hi):
-    pivot = liste[hi]
+def partition(liste, lo, hi, rand):
+    pivot = liste[random.randint]
     i = lo
     for j in range(lo, hi):
         if liste[j] <= pivot:
@@ -104,14 +104,12 @@ def radixsort(liste):
 
 def main():
     from sys import stdin
-    liste = []
-    for x in stdin.readline().split():
-        liste.append(int(x)) #  Kanskje mulig aa gjore dette raskere?
+    import random
+    liste = map(int, stdin.readline().split())
     if len(liste) < 7:
         insertion_sort(liste)
     else:
         radixsort(liste)
-
     for linje in stdin:
         ord = linje.split()
         resultat = finn(liste, int(ord[0]), int(ord[1]))

@@ -33,6 +33,7 @@ def insertion_sort(list):
 
 list1 = [1,2,3,4,78,9,6,2,3,5,6,8,9,4,2,6,0,3,1,56,253,62,5]
 def quick_sort(liste, lo, hi):
+    print list1
     if lo < hi:
         p = partition(liste, lo, hi)
         quick_sort(liste, lo, p - 1)
@@ -81,6 +82,5 @@ def merge(left, right):
 
 
 
-print list1
 quick_sort(list1, 0, len(list1) - 1)
 print list1
