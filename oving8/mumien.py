@@ -7,19 +7,18 @@ def main():
 
     n = int(stdin.readline())
     sannsynligheter = map(float, stdin.readline().split())
-    nabomatrise = []
-    for linje in stdin:
+    nabomatrise = [[] for x in range(n)]
+    for i in range(n):
         naborad = [0] * n
-        naboer = map(int, linje.split())
+        naboer = map(int, stdin.readline().split())
         for nabo in naboer:
             naborad[nabo] = 1
-        nabomatrise.append(naborad)
+        nabomatrise[i] = naborad
 
-    parents = [None]*len(sannsynligheter)
-    weights = [0]*len(sannsynligheter)
+    parents = [None]*n
+    weights = [0]*n
     weights[0] = sannsynligheter[0]
-    noder = [x for x in range(len(sannsynligheter))]
-    visited = set()
+    noder = [x for x in range(n)]
     while len(noder) > 0:
         highest = weights[noder[0]]
         node = noder[0]
@@ -28,25 +27,20 @@ def main():
                 highest = weights[i]
                 node = i
         noder.pop(noder.index(node))
-        if node in visited:
-            continue
-        visited.add(node)
-        for i in range(len(nabomatrise)):
+        for i in range(n):
             if nabomatrise[node][i] == 1 and weights[i] < weights[node]*sannsynligheter[i]:
                 weights[i] = weights[node]*sannsynligheter[i]
                 parents[i] = node
-        if node == len(nabomatrise) - 1:
+        if node == n - 1:
             break
-    path = [str(len(parents) - 1)]
-    parent = parents[-1]
-    changed = False
-    while parent is not None:
-        path.append(str(parent))
-        parent = parents[parent]
-        changed = True
-    if changed:
-        print "-".join(path[::-1])
+    if parents[-1] is None:
+        print 0
     else:
-        print '0'
+        path = [str(n - 1)]
+        parent = parents[-1]
+        while parent is not None:
+            path.append(str(parent))
+            parent = parents[parent]
+        print "-".join(path[::-1])
 
 main()
