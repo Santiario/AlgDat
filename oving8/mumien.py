@@ -7,7 +7,7 @@ def main():
 
     n = int(stdin.readline())
     sannsynligheter = map(float, stdin.readline().split())
-    nabomatrise = [[] for x in range(n)]
+    nabomatrise = [[] for _ in range(n)]
     for i in range(n):
         naborad = [0] * n
         naboer = map(int, stdin.readline().split())
