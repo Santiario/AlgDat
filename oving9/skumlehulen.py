@@ -1,74 +1,54 @@
 __author__ = 'Vemund'
 def main():
     from sys import stdin
+    from collections import deque
 
     # kapasiteter er den opprinnelige kapasitetsmatrisen, som inneholder n x n elementer (hvor n er antall noder).
     # startrom er en liste med indeksene til nodene som tilsvarer startrommene.
     # utganger er en liste med indeksene til nodene som tilsvarer utgangene.
 
     def antallIsolerteStier(kapasiteter, startrom, utganger):
-        for i in range(len(kapasiteter)):
-            kapasiteter[i].insert(0, 0)
-        for i in range(len(kapasiteter)):
-            if i in utganger:
-                kapasiteter[i].append(1)
-            else:
-                kapasiteter[i].append(0)
-            kapasiteter[i].append(0)
-
-
-        ny_kapa = []
-        i = 1
-        while i < len(kapasiteter):
-            node = [0] * (len(kapasiteter) * 2)
-            node[i * 2] = 1
-            ny_nabo = []
-            for j in range(1, len(kapasiteter[i]) - 2):
-                if kapasiteter[i][j] == 1:
-                    ny_nabo.extend([1, 0])
-                else:
-                    ny_nabo.extend([0, 0])
-            ny_kapa.append(node)
-            ny_kapa.append(ny_nabo)
-            i += 1
-
-        ny_superstart = [0] * (len(ny_kapa) + 2)
-        for start in startrom:
-            ny_superstart[start * 2 + 1] = 1
-        ny_kapa.insert(0, ny_superstart)
-        ny_kapa.append([0] * len(ny_superstart))
+        original_n = len(kapasiteter)
+        n = 2 * len(kapasiteter) + 2
 
 
 
-        #""" Nice print"""
-        #print 'Printer kapasiteter'
-        #print "  ",0,"",1,"",2,"",3,"",4,"",5,"",6,"",7,"",8
-        #for i in range(len(ny_kapa)):
-        #    print i, ny_kapa[i]
+        ny_kapa = [[]]* n
+        for i in xrange(n):
+            ny_kapa[i] = [0] * n
 
-        flyt = [[]]*len(ny_kapa)
-        for i in range(len(ny_kapa)):
-            flyt[i] = [0] * len(ny_kapa)
-        aug_path = finnFlytsti(0, len(ny_kapa) - 2, flyt, ny_kapa)
-        #print aug_path
+        for kilde in startrom:
+            ny_kapa[0][kilde * 2 + 1] = 1
+
+        for i in xrange(original_n):
+            for j in xrange(original_n):
+                ny_kapa[2*i+2][2*j+1] = kapasiteter[i][j]
+            ny_kapa[2*i+1][2*i+2] = 1
+
+
+        for i in utganger:
+            ny_kapa[2*i+2][n - 1] = 1
+
+        flyt = [[]] * n
+        for i in xrange(n):
+            flyt[i] = [0] * n
+        sluk = n - 1
+        stier = 0
+        antall_innganger = len(startrom)
+        antall_utganger = len(utganger)
+        aug_path = finnFlytsti(0, sluk, flyt, ny_kapa)
+
         while aug_path:
-            for i in range(len(aug_path) - 1):
+            stier += 1
+            if stier == antall_innganger or stier == antall_utganger:
+                break
+            for i in xrange(len(aug_path) - 1):
                 flyt[aug_path[i]][aug_path[i + 1]] += 1
-            aug_path = finnFlytsti(0, len(ny_kapa) - 2, flyt, ny_kapa)
-        #print 'Ferdig!'
+                flyt[aug_path[i+1]][aug_path[i]] -= 1
+            aug_path = finnFlytsti(0, sluk, flyt, ny_kapa)
 
+        return stier
 
-        #""" Nice print"""
-        #print "  ",0,"",1,"",2,"",3,"",4,"",5,"",6,"",7
-        #for i in range(len(flyt)):
-        #    print i, flyt[i]
-        return sum(flyt[0])
-
-        # Sok gjennom grafen helt til den returnerer None
-
-
-        # Du kan bruke metoden finnFlytsti for aa forenkle oppgaven.
-        # SKRIV DIN KODE HER
 
 
     # Finner en sti fra noden med indeks 'kilde' til noden med indeks 'sluk'
@@ -83,9 +63,10 @@ def main():
         n = len(F)
         oppdaget = [False] * n
         forelder = [None] * len(F)
-        koe = [kilde]
+        koe = deque()
+        koe.append(kilde)
         while koe:
-            node = koe.pop(0)
+            node = koe.pop()
             if node == sluk:
                 # Har funnet sluken, lager en array med passerte noder
                 sti = []
@@ -97,7 +78,7 @@ def main():
                     i = forelder[i]
                 sti.reverse()
                 return sti
-            for nabo in range(n):
+            for nabo in xrange(n):
                 if not oppdaget[nabo] and F[node][nabo] < C[node][nabo]:
                     koe.append(nabo)
                     oppdaget[nabo] = True
@@ -110,7 +91,5 @@ def main():
     nabomatrise = [[]]*noder
     for i, linje in enumerate(stdin.readlines()):
         nabomatrise[i] = map(int, linje.split())
-    #for i in range(len(nabomatrise)):
-    #    print nabomatrise[i]
     print antallIsolerteStier(nabomatrise, startrom, utganger)
 main()
